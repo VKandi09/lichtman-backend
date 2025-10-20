@@ -33,18 +33,6 @@ router.get("/types", async (req, res) => {
   }
 });
 
-// Get all products with subTypes
-router.get("/types/sub-types", async (req, res) => {
-  try {
-    const subTypes = await Product.distinct("subType", { subType: { $ne: "" } });
-    res.set('X-Total-Count', subTypes.length);
-    res.json(subTypes);
-  } catch (error) {
-    console.error("Error fetching product types:", error);
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-
 // Get all products marked as 'special'
 router.get("/specials", async (req, res) => {
   try {
@@ -64,6 +52,18 @@ router.get("/featured", async (req, res) => {
     res.status(200).json(featuredProducts);
   } catch (err) {
     res.status(500).json({ message: "Error fetching featured products" });
+  }
+});
+
+// Get all products with subTypes
+router.get("/types/sub-types", async (req, res) => {
+  try {
+    const subTypes = await Product.distinct("subType", { subType: { $ne: "" } });
+    res.set('X-Total-Count', subTypes.length);
+    res.json(subTypes);
+  } catch (error) {
+    console.error("Error fetching product types:", error);
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
