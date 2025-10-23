@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     let filter = {};
     if (type) filter.type = type.toLowerCase();
     if (subType) filter.subType = subType.toLowerCase();
-    
+
     const products = await Product.find(filter);
     res.set('X-Total-Count', products.length);
     res.json(products);
@@ -64,6 +64,21 @@ router.get("/types/sub-types", async (req, res) => {
 
     res.set('X-Total-Count', uniqueLowerSubTypes.length);
     res.json(uniqueLowerSubTypes);
+  } catch (error) {
+    console.error("Error fetching product types:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+// Get all brands 
+router.get("/brands", async (req, res) => {
+  try {
+    const brands = await Product.distinct("brand", { brand: { $ne: "" } });
+
+    const uniqueBrands = [...new Set(brands.map((brand) => brand.toLowerCase()))];
+
+    res.set('X-Total-Count', uniqueBrands.length);
+    res.json(uniqueBrands);
   } catch (error) {
     console.error("Error fetching product types:", error);
     res.status(500).json({ message: "Server Error" });

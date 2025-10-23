@@ -10,7 +10,8 @@ const productSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   stock: { type: Number, required: true },
   image: { type: String, default: "" },
-  subType: { type: String, default: "" }
+  subType: { type: String, default: "" },
+  description: { type: String, default: "" },
 }, { timestamps: true });
 
 const Product = mongoose.model("Product", productSchema, "lichtmans_specials");
