@@ -24,8 +24,6 @@ export const syncFeaturedTypes = async () => {
       }
     }
 
-    console.log('featuredProducts: ', featuredProducts);
-
     // 3️⃣ Clear old featured products
     await FeaturedProduct.deleteMany({});
 

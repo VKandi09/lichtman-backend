@@ -8,11 +8,12 @@ const router = express.Router();
 // GET all products
 router.get("/", async (req, res) => {
   try {
-    const filter = {};
-    console.log("Query parameters:", req.query);
-    if (req.query.type) filter.type = req.query.type;
+    const { type, subType  } = req.query;
+    let filter = {};
+    if (type) filter.type = type.toLowerCase();
+    if (subType) filter.subType = subType.toLowerCase();
+    
     const products = await Product.find(filter);
-    console.log("Products fetched:", products.length);
     res.set('X-Total-Count', products.length);
     res.json(products);
   } catch (err) {
@@ -37,7 +38,6 @@ router.get("/types", async (req, res) => {
 router.get("/specials", async (req, res) => {
   try {
     const specials = await Product.find({ special: true });
-    console.log("Fetched special products:", specials.length);
     res.json(specials);
   } catch (error) {
     console.error("Error fetching special products:", error);
@@ -59,8 +59,11 @@ router.get("/featured", async (req, res) => {
 router.get("/types/sub-types", async (req, res) => {
   try {
     const subTypes = await Product.distinct("subType", { subType: { $ne: "" } });
-    res.set('X-Total-Count', subTypes.length);
-    res.json(subTypes);
+
+    const uniqueLowerSubTypes = [...new Set(subTypes.map((type) => type.toLowerCase()))];
+
+    res.set('X-Total-Count', uniqueLowerSubTypes.length);
+    res.json(uniqueLowerSubTypes);
   } catch (error) {
     console.error("Error fetching product types:", error);
     res.status(500).json({ message: "Server Error" });

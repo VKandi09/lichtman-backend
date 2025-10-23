@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import productRoutes from "./routes/productRoutes.js";
+import eventRoutes from './routes/eventRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
 import { syncFeaturedTypes } from './utils/syncFeaturedTypes.js';
 
 dotenv.config();
@@ -20,7 +22,6 @@ mongoose.connect(process.env.MONGO_URI)
     // Call syncFeaturedTypes here
     try {
       const synced = await syncFeaturedTypes();
-      console.log('Featured products synced on startup:', synced.length);
     } catch (err) {
       console.error('Error syncing featured products:', err);
     }
@@ -38,6 +39,8 @@ app.get('/test', (req, res) => {
 
 app.use('/api/products', productRoutes);
 // app.use('/api/featured', productRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/contact', contactRoutes);
 
 const PORT = process.env.PORT || 5001;
 // Start server
