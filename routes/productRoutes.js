@@ -48,8 +48,9 @@ router.get("/specials", async (req, res) => {
 // GET all featured products
 router.get("/featured", async (req, res) => {
   try {
-    const featuredProducts = await FeaturedProduct.find();
-    res.status(200).json(featuredProducts);
+    const types = await FeaturedProduct.distinct("type");
+    const uniqueLowercaseTypes = [...new Set(types.map(type => type.toLowerCase()))];
+    res.status(200).json(uniqueLowercaseTypes);
   } catch (err) {
     res.status(500).json({ message: "Error fetching featured products" });
   }
