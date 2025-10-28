@@ -49,10 +49,11 @@ router.get("/specials", async (req, res) => {
 router.get("/featured", async (req, res) => {
   try {
     const featuredProducts = [...new Set(
-    (await FeaturedProduct.distinct("type"))
+    (await FeaturedProduct.distinct("type", { type: { $ne: "" } }))
       .filter(t => t != null)
       .map(t => t.toLowerCase())
   )];
+  console.log("Featured Products:", featuredProducts);
   res.status(200).json(featuredProducts);
   } catch (err) {
     res.status(500).json({ message: "Error fetching featured products" });

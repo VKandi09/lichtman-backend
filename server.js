@@ -44,7 +44,7 @@ app.get('/test', (req, res) => {
 });
 
 app.use('/api/products', productRoutes);
-// app.use('/api/featured', productRoutes);
+app.use('/api/featured', productRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/contact', contactRoutes);
 
