@@ -13,15 +13,15 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+// app.use(cors());
 
 /* For Production */
-// const allowedOrigins = [process.env.FRONTEND_URL];
+const allowedOrigins = [process.env.FRONTEND_URL];
 
-// app.use(cors({
-//   origin: allowedOrigins.length ? allowedOrigins : true, // true allows all for testing
-//   methods: ["GET", "POST", "PUT", "DELETE"],
-// }));
+app.use(cors({
+  origin: allowedOrigins.length ? allowedOrigins : true, // true allows all for testing
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}));
 
 app.use(express.json());
 
