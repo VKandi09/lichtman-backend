@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import productRoutes from "./routes/productRoutes.js";
 import eventRoutes from './routes/eventRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
+import offerRoutes from './routes/offers.js';
 import { syncFeaturedTypes } from './utils/syncFeaturedTypes.js';
 
 dotenv.config();
@@ -12,13 +13,16 @@ dotenv.config();
 const app = express();
 
 // Middleware
-// app.use(cors());
-const allowedOrigins = [process.env.FRONTEND_URL];
+app.use(cors());
 
-app.use(cors({
-  origin: allowedOrigins.length ? allowedOrigins : true, // true allows all for testing
-  methods: ["GET", "POST", "PUT", "DELETE"],
-}));
+/* For Production */
+// const allowedOrigins = [process.env.FRONTEND_URL];
+
+// app.use(cors({
+//   origin: allowedOrigins.length ? allowedOrigins : true, // true allows all for testing
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+// }));
+
 app.use(express.json());
 
 // MongoDB connection
@@ -47,6 +51,7 @@ app.use('/api/products', productRoutes);
 // app.use('/api/featured', productRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/offers', offerRoutes);
 
 const PORT = process.env.PORT || 5001;
 // Start server
